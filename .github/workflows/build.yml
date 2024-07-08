@@ -7,6 +7,9 @@ on:
     types: [published] # 只在发布 release 时触发
   workflow_dispatch: # 手动触发
 
+env:
+  latest_release_tag: 'v2.0.0-beta.25-patch.1'
+
 jobs:
   build_app:
     runs-on: macos-14
@@ -22,9 +25,7 @@ jobs:
       - name: Get latest release tag
         id: get_latest_release
         run: |
-          latest_release_tag=$(curl -s https://api.github.com/repos/0xJacky/nginx-ui/releases/latest | jq -r '.tag_name')
           echo "?${latest_release_tag}"
-          # 提取标签
           echo "latest_release_tag=${latest_release_tag}" >> $GITHUB_ENV
 
       - name: Download latest release source code
@@ -100,8 +101,6 @@ jobs:
       - name: Get latest release tag
         id: get_latest_release
         run: |
-          latest_release_tag=$(curl -s https://api.github.com/repos/0xJacky/nginx-ui/releases/latest | jq -r '.tag_name')
-          # 提取标签
           echo "latest_release_tag=${latest_release_tag}" >> $GITHUB_ENV
 
       - name: Download latest release source code
@@ -195,8 +194,6 @@ jobs:
       - name: Get latest release tag
         id: get_latest_release
         run: |
-          latest_release_tag=$(curl -s https://api.github.com/repos/0xJacky/nginx-ui/releases/latest | jq -r '.tag_name')
-          # 提取标签
           echo "latest_release_tag=${latest_release_tag}" >> $GITHUB_ENV
 
       - name: Download latest release source code
