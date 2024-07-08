@@ -229,7 +229,7 @@ jobs:
 
       - name: Download artifacts
         run: |
-          sed "s#uozi/nginx-ui-base:latest#yiniot/openresty-base:latest#g“ -i source/dockerfile
+          sed "s#uozi/nginx-ui-base:latest#yiniot/openresty-base:latest#g“ -i Dockerfile
           cp -rf nginx.conf resources/docker/nginx.conf
 
       - name: Prepare Artifacts
