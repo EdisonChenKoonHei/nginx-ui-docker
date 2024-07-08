@@ -9,6 +9,9 @@ jobs:
   build_app:
     runs-on: macos-14
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up nodejs
         uses: actions/setup-node@v4
         with:
@@ -19,7 +22,7 @@ jobs:
         run: |
           latest_release_tag=$(curl -s https://api.github.com/repos/0xJacky/nginx-ui/releases/latest | jq -r '.tag_name')
           # 提取标签
-          echo "${latest_release_tag}" >> $GITHUB_ENV
+          echo "latest_release_tag=${latest_release_tag}" >> $GITHUB_ENV
 
       - name: Download latest release source code
         run: |
@@ -28,10 +31,6 @@ jobs:
           mkdir source
           tar -xzf source.tar.gz --strip-components=1
           rm -rf source.tar.gz
-
-      #   - name: sed
-      #     run: |
-      #       sed "s#uozi/nginx-ui-base:latest#yiniot/openresty-base:latest#g" -i Dockerfile
 
       - name: Install dependencies
         run: |
@@ -79,30 +78,33 @@ jobs:
     needs: build_app
     strategy:
       matrix:
-        goos: [linux, darwin]
-        goarch: [amd64, 386, arm64]
-        exclude:
-          # Exclude i386 on darwin.
-          - goarch: 386
-            goos: darwin
-        include:
-          # BEGIN Linux ARM 5 6 7
-          - goos: linux
-            goarch: arm
-            goarm: 7
-          - goos: linux
-            goarch: arm
-            goarm: 6
-          - goos: linux
-            goarch: arm
-            goarm: 5
-          # END Linux ARM 5 6 7
+        goos: [linux]
+        goarch: [amd64, arm64]
+        # exclude:
+        #   # Exclude i386 on darwin.
+        #   - goarch: 386
+        #     goos: darwin
+        # include:
+        #   # BEGIN Linux ARM 5 6 7
+        #   - goos: linux
+        #     goarch: arm
+        #     goarm: 7
+        #   - goos: linux
+        #     goarch: arm
+        #     goarm: 6
+        #   - goos: linux
+        #     goarch: arm
+        #     goarm: 5
+        #   # END Linux ARM 5 6 7
     env:
       CGO_ENABLED: 1
       GOOS: ${{ matrix.goos }}
       GOARCH: ${{ matrix.goarch }}
       GOARM: ${{ matrix.goarm }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
@@ -201,6 +203,9 @@ jobs:
     env:
       PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/arm/v5
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Get the version
         id: get_version
         run: |
