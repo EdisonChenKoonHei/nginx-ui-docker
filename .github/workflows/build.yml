@@ -240,4 +240,4 @@ jobs:
           push: true
           tags: |
             yiniot/nginx-ui:latest
-            yiniot/nginx-ui:${latest_release_tag}
+            yiniot/nginx-ui:${{ env.latest_release_tag }}
