@@ -1,0 +1,12 @@
+.DS_Store
+database.db
+tmp
+node_modules
+.pnpm-store
+app.ini
+dist
+*.exe
+*.po~
+nginx-ui
+resources/development/nginx
+app/.env
