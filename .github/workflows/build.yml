@@ -21,6 +21,7 @@ jobs:
         id: get_latest_release
         run: |
           latest_release_tag=$(curl -s https://api.github.com/repos/0xJacky/nginx-ui/releases/latest | jq -r '.tag_name')
+          echo $latest_release_tag
           # 提取标签
           echo "latest_release_tag=${latest_release_tag}" >> $GITHUB_ENV
 
