@@ -240,4 +240,4 @@ jobs:
           push: true
           tags: |
             yiniot/nginx-ui:latest
-            yiniot/nginx-ui:${{ steps.get_version.outputs.VERSION }}
+            yiniot/nginx-ui:${latest_release_tag}
