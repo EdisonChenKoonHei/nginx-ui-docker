@@ -26,20 +26,23 @@ RUN case "${TARGETARCH}/${TARGETVARIANT}" in \
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 COPY init /init
 
+
 # register nginx service
-COPY nginx-ui-base/nginx /etc/s6-overlay/s6-rc.d/nginx/run
+COPY nginx /etc/s6-overlay/s6-rc.d/nginx/run
 RUN echo 'longrun' > /etc/s6-overlay/s6-rc.d/nginx/type && touch /etc/s6-overlay/s6-rc.d/user/contents.d/nginx
 
 RUN mkdir -p /usr/local/etc \
-    && mkdir /etc/nginx/sites-available \
-    && mkdir /etc/nginx/sites-enabled \
-    && mkdir /etc/nginx/streams-available \
-    && mkdir /etc/nginx/streams-enabled \
+    && mkdir -p /etc/nginx/sites-available \
+    && mkdir -p /etc/nginx/sites-enabled \
+    && mkdir -p /etc/nginx/streams-available \
+    && mkdir -p /etc/nginx/streams-enabled \
+    && mkdir -p /etc/nginx-ui/ \
+    && mkdir -p /var/log/nginx/ \
     && cp -r /etc/nginx /usr/local/etc/nginx
 
 # init config
-COPY nginx-ui-base/init-config.up /etc/s6-overlay/s6-rc.d/init-config/up
-COPY nginx-ui-base/init-config.sh /etc/s6-overlay/s6-rc.d/init-config/init-config.sh
+COPY init-config.up /etc/s6-overlay/s6-rc.d/init-config/up
+COPY init-config.sh /etc/s6-overlay/s6-rc.d/init-config/init-config.sh
 
 RUN chmod +x /etc/s6-overlay/s6-rc.d/init-config/init-config.sh && \
     echo 'oneshot' > /etc/s6-overlay/s6-rc.d/init-config/type && \
@@ -52,7 +55,7 @@ ENTRYPOINT ["/init"]
 #### nginx-ui dockerfile ####
 
 ENV NGINX_UI_OFFICIAL_DOCKER=true
-
+ENV NGINX_UI_SERVER_RUN_MODE=release
 # register nginx-ui service
 COPY resources/docker/nginx-ui.run /etc/s6-overlay/s6-rc.d/nginx-ui/run
 RUN echo 'longrun' > /etc/s6-overlay/s6-rc.d/nginx-ui/type && \
@@ -63,7 +66,7 @@ COPY resources/docker/nginx.conf /usr/local/etc/nginx/nginx.conf
 COPY resources/docker/nginx-ui.conf /usr/local/etc/nginx/conf.d/nginx-ui.conf
 
 # copy nginx-ui executable binary
-COPY nginx-ui-$TARGETOS-$TARGETARCH$TARGETVARIANT/nginx-ui /usr/local/bin/nginx-ui
+COPY nginx-ui /usr/local/bin/nginx-ui
 
 # remove default nginx config
 RUN rm -f /etc/nginx/conf.d/default.conf  \
@@ -73,4 +76,7 @@ RUN rm -f /etc/nginx/conf.d/default.conf  \
 RUN rm -f /var/log/nginx/access.log && \
     touch /var/log/nginx/access.log && \
     rm -f /var/log/nginx/error.log && \
-    touch /var/log/nginx/error.log
+    touch /var/log/nginx/error.log && \
+    chmod 755 /usr/local/bin/nginx-ui && \
+    chmod 755 /init && \
+    chmod 755 /docker-entrypoint.sh
