@@ -23,6 +23,8 @@ RUN case "${TARGETARCH}/${TARGETVARIANT}" in \
     wget -O /tmp/s6-overlay-noarch.tar.xz https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz && \
     tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
 
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY init /init
 
 # register nginx service
 COPY nginx-ui-base/nginx /etc/s6-overlay/s6-rc.d/nginx/run

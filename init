@@ -1,0 +1,47 @@
+#!/bin/sh -e
+
+# 这是容器启动时第一个执行的程序。
+# 我们不知道我们的可执行文件在哪里，也不能保证默认的 PATH 可以访问它们。
+# 因此，在 PATH 至少包含 /command、/usr/bin 和 /bin 之前，这个脚本需要完全自包含。
+
+addpath () {
+  x="$1"
+  IFS=:
+  set -- $PATH
+  IFS=
+  while test "$#" -gt 0 ; do
+    if test "$1" = "$x" ; then
+      return
+    fi
+    shift
+  done
+  PATH="${x}:$PATH"
+}
+
+if test -z "$PATH" ; then
+  PATH=/bin
+fi
+
+addpath /bin
+addpath /usr/bin
+addpath /command
+export PATH
+
+/docker-entrypoint.sh
+
+# 等待 Docker 就绪通知，如果有的话
+
+if read _ 2>/dev/null <&3 ; then
+  exec 3<&-
+fi
+
+
+# 现在我们准备好了：s6-overlay-suexec 可以通过 PATH 访问，
+# 我们的所有二进制文件也是。
+# 以 root 身份运行 preinit，然后以容器用户（可以是 root，也可以是普通用户）运行 stage0。
+
+exec s6-overlay-suexec \
+  ' /package/admin/s6-overlay-3.1.6.2/libexec/preinit' \
+  '' \
+  /package/admin/s6-overlay-3.1.6.2/libexec/stage0 \
+  "$@"

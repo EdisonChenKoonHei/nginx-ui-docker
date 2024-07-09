@@ -229,6 +229,11 @@ jobs:
         run: |
           cp ./Dockerfile ./dist
           cp -rp ./resources ./dist
+          cp -rp init ./dist
+          cp -rp init-config.sh ./dist
+          cp -rp init-config.up ./dist
+          cp -rp nginx ./dist
+          cp -rp nginx.conf ./dist
 
       - name: Build and push
         uses: docker/build-push-action@v5
