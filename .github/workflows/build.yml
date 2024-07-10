@@ -209,13 +209,6 @@ jobs:
         with:
           path: ./dist
 
-      - name: Download artifacts
-        run: |
-          cp -rf nginx.conf resources/docker/nginx.conf
-
-      - name: Prepare Artifacts
-        run: chmod +x ./dist/nginx-ui-*/nginx-ui
-
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v3
@@ -234,6 +227,8 @@ jobs:
           cp -rpf init-config.up ./dist
           cp -rpf nginx ./dist
           cp -rpf nginx.conf ./dist
+          cp -rpf nginx.conf ./dist/resources/docker/nginx.conf
+          chmod +x ./dist/nginx-ui-*/nginx-ui
 
       - name: Build and push
         uses: docker/build-push-action@v5
