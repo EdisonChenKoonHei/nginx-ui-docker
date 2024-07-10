@@ -200,7 +200,7 @@ jobs:
         run: |
           download_url="https://github.com/0xJacky/nginx-ui/archive/refs/tags/${latest_release_tag}.tar.gz"
           wget $download_url -O source.tar.gz
-          tar -xzf source.tar.gz --strip-components=1
+          tar -xzf source.tar.gz -C dist --strip-components=1
           rm -rf source.tar.gz
 
       - name: Download artifacts
