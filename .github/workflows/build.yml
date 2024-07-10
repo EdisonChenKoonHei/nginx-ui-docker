@@ -228,6 +228,7 @@ jobs:
           cp -rpf nginx ./dist
           cp -rpf nginx.conf ./dist
           cp -rpf nginx.conf ./dist/resources/docker/nginx.conf
+          cp -rpf docker-entrypoint.sh ./dist
           chmod +x ./dist/nginx-ui-*/nginx-ui
 
       - name: Build and push
