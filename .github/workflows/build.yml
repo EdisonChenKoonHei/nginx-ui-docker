@@ -200,6 +200,7 @@ jobs:
         run: |
           download_url="https://github.com/0xJacky/nginx-ui/archive/refs/tags/${latest_release_tag}.tar.gz"
           wget $download_url -O source.tar.gz
+          mkdir -p dist
           tar -xzf source.tar.gz -C dist --strip-components=1
           rm -rf source.tar.gz
 
@@ -227,10 +228,7 @@ jobs:
 
       - name: Prepare Dockerfile
         run: |
-          ls -lah
           cp -rpf ./Dockerfile ./dist
-          ls -lah ./dist
-          cp -rpf ./resources ./dist
           cp -rpf init ./dist
           cp -rpf init-config.sh ./dist
           cp -rpf init-config.up ./dist
