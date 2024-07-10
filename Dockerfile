@@ -66,7 +66,7 @@ COPY resources/docker/nginx.conf /usr/local/etc/nginx/nginx.conf
 COPY resources/docker/nginx-ui.conf /usr/local/etc/nginx/conf.d/nginx-ui.conf
 
 # copy nginx-ui executable binary
-COPY nginx-ui-$TARGETOS-$TARGETARCH$TARGETVARIANT /usr/local/bin/nginx-ui
+COPY nginx-ui-$TARGETOS-$TARGETARCH$TARGETVARIANT/nginx-ui /usr/local/bin/nginx-ui
 
 # remove default nginx config
 RUN rm -f /etc/nginx/conf.d/default.conf  \
