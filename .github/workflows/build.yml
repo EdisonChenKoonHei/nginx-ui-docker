@@ -227,13 +227,13 @@ jobs:
 
       - name: Prepare Dockerfile
         run: |
-          cp ./Dockerfile ./dist
-          cp -rp ./resources ./dist
-          cp -rp init ./dist
-          cp -rp init-config.sh ./dist
-          cp -rp init-config.up ./dist
-          cp -rp nginx ./dist
-          cp -rp nginx.conf ./dist
+          cp -rpf ./Dockerfile ./dist
+          cp -rpf ./resources ./dist
+          cp -rpf init ./dist
+          cp -rpf init-config.sh ./dist
+          cp -rpf init-config.up ./dist
+          cp -rpf nginx ./dist
+          cp -rpf nginx.conf ./dist
 
       - name: Build and push
         uses: docker/build-push-action@v5
