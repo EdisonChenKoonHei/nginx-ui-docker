@@ -239,5 +239,5 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           push: true
           tags: |
-            yiniot/nginx-ui:latest
-            yiniot/nginx-ui:${{ env.latest_release_tag }}
+            edisonchenkoonhei/nginx-ui:latest
+            edisonchenkoonhei/nginx-ui:${{ env.latest_release_tag }}
