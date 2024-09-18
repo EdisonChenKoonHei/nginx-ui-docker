@@ -8,7 +8,7 @@ on:
   workflow_dispatch: # 手动触发
 
 env:
-  latest_release_tag: 'v2.0.0-beta.25-patch.1'
+  latest_release_tag: 'v2.0.0-beta.34'
 
 jobs:
   build_app:
